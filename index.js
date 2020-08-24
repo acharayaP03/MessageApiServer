@@ -1,15 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const cors    = require('cors');
 const PORT    = process.env.PORT || 8001;
 const app = express();
 
 const errorController = require('./Controllers/Error');
+const authRoutes = require('./Routes/auth')
 
 app.use(express.json());
 
 app.use(cors())
 
-
+//api endpoints
+app.use("/api/auth", authRoutes)
 //all our routes wil be here, if routes not found then send it to next() middle ware
 
 app.use(function(req, res, next) {
