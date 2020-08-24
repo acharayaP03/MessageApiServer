@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema({
     },
     profileImageUrl: {
         type: String
-    }
+    },
+    messages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
+    }]
 });
 
 //since the password cannot be saved on plain text, we will run mongoose hook to encrypt password before saving. below is the function.
@@ -39,6 +43,16 @@ userSchema.pre("save", async function(next){
         return next(err);
     }
 })
+
+//when user is loging in we need to compare their input password to the stored password. 
+userSchema.methods.comparePassword = async function(userPassowrd, next){
+    try{
+        let isMatch = await bcrypt.compare(userPassowrd, this.password);
+        return isMatch;
+    }catch(err){
+        return next(err)
+    }
+}
 
 const User = mongoose.model("User", userSchema);
 
