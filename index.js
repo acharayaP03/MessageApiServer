@@ -7,6 +7,7 @@ const app = express();
 const errorController = require('./Controllers/Error');
 const authRoutes = require('./Routes/auth')
 const messageRoutes = require( './Routes/messages');
+const { loginRequired, ensureCorrectUser } = require('./Middleware/auth')
 
 
 app.use(express.json());
@@ -16,7 +17,8 @@ app.use(cors())
 //api endpoints
 //authRoutes reffers either signin or signup routes from routes folder.
 app.use("/api/auth", authRoutes)
-app.use("/api/user/:id/messages", messageRoutes);
+//now before user writes any messages, run both middleware loginRequired and ensureCorrectUser
+app.use("/api/user/:id/messages", loginRequired, ensureCorrectUser ,messageRoutes);
 
 //all our routes wil be here, if routes not found then send it to next() middle ware
 

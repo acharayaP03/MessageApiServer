@@ -1,5 +1,5 @@
 //make sure we load any environment variables..
-require('dotenv').load();
+require('dotenv').load;
 
 const jwt = require('jsonwebtoken');
 
