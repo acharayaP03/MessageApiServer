@@ -31,9 +31,13 @@ exports.ensureCorrectUser = function(req, res, next){
         const token = req.headers.authorization.split(" ")[1];
         jwt.verify(token, process.env.SECRET_KEY, function(err, payload){
             // onlh allow user if the payload id is equals to users id
+            //payload is the second part of the jwt token, see jwt documentation.
             if(payload && payload.id === req.params.id){
+                // here we are checking if payload exist in user request and if the payload matches to the jwt payoad.
+                // if it matches then let them through. 
                 return next();
             }else{
+                //if payload doesnt matches then deny acess.
                 return next({
                     status: 401,
                     message: "Access Unauthorized."
@@ -42,6 +46,7 @@ exports.ensureCorrectUser = function(req, res, next){
         })
     }catch(e){
         return next({
+            //if anyting goes wrong with request still show them access denied error.
             status: 401,
             message: "Access Unauthorized."
         })

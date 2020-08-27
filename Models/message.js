@@ -5,17 +5,21 @@ const mongoose = require('mongoose');
 const User = require('./user');
 
 const messageSchema = mongoose.Schema({
-    text: {
-        type: String,
-        required: true,
-        maxLenght: 160, 
-       
+        text: {
+            type: String,
+            required: true,
+            maxLenght: 160, 
+        
+        },
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+    {
+        timestamps: true
     }
-})
+)
 
 //while deleting message from the user,
 

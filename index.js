@@ -7,7 +7,9 @@ const app = express();
 const errorController = require('./Controllers/Error');
 const authRoutes = require('./Routes/auth')
 const messageRoutes = require( './Routes/messages');
-const { loginRequired, ensureCorrectUser } = require('./Middleware/auth')
+const { loginRequired, ensureCorrectUser } = require('./Middleware/auth');
+const { connect } = require('mongoose');
+const conn = require('./Models');
 
 
 app.use(express.json());
@@ -19,6 +21,18 @@ app.use(cors())
 app.use("/api/auth", authRoutes)
 //now before user writes any messages, run both middleware loginRequired and ensureCorrectUser
 app.use("/api/user/:id/messages", loginRequired, ensureCorrectUser ,messageRoutes);
+
+app.get("/api/messages", loginRequired, async function(req, res, next){
+    try {
+        let messages = await conn.Message.find().populate("user", {
+            username: true, 
+            profileImageUrl: true
+        })
+        return res.status(200).json(messages)
+    } catch (error) {
+        return next(error);
+    }
+})
 
 //all our routes wil be here, if routes not found then send it to next() middle ware
 
