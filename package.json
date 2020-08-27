@@ -2,7 +2,7 @@
     "name": "messaging-app-server",
     "private": true,
     "version": "1.0.0",
-    "description": "",
+    "description": "This a small node and Express js api server which mimics the twiter app",
     "main": "index.js",
     "scripts": {
         "start": "nodemon index.js"
